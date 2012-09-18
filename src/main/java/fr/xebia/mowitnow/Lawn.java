@@ -12,13 +12,12 @@ import org.apache.log4j.Logger;
  */
 public class Lawn {
 
-    private final Logger logger = Logger.getLogger(Lawn.class);
     private final int sizeX;
     private final int sizeY;
 
-    public Lawn(int sizeX, int sizeY) {
-        this.sizeX = sizeX;
-        this.sizeY = sizeY;
+    public Lawn(int xMax, int yMax) {
+        this.sizeX = xMax + 1;
+        this.sizeY = yMax + 1;
     }
 
     public int getSizeX() {
@@ -103,8 +102,26 @@ public class Lawn {
         }
 
         @Override
+        public boolean equals(Object obj) {
+            if (obj instanceof Point) {
+                Point otherPoint = (Point) obj;
+                return otherPoint.x == this.x && otherPoint.y == this.y;
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public int hashCode() {
+            int hash = 3;
+            hash = 29 * hash + this.x;
+            hash = 29 * hash + this.y;
+            return hash;
+        }
+
+        @Override
         public String toString() {
-            return '(' + x + ", " + y + ')';
+            return "(" + x + ", " + y + ')';
         }
     }
 

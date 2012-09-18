@@ -15,7 +15,7 @@ import javax.swing.table.TableColumn;
  *
  * @author Renaud
  */
-public class LawnDisplay {
+public class LawnGUI {
 
     Lawn lawn;
     final JFrame frame;
@@ -24,7 +24,7 @@ public class LawnDisplay {
     /**
      * Creates new form UI
      */
-    public LawnDisplay(Lawn lawn) {
+    public LawnGUI(Lawn lawn) {
         this.lawn = lawn;
         this.frame = new JFrame("Lawn Display");
     }
@@ -89,16 +89,13 @@ public class LawnDisplay {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
             ImageIcon icon;
-            String text;
             if (value != null) {
                 LawnMower mower = (LawnMower) value;
                 icon = new ImageIcon(getClass().getResource("mower" + mower.getDirection().name() + ".jpg"));
-                text = "";// mower.toString();
             } else {
                 icon = new ImageIcon(getClass().getResource("grass.jpg"));
-                text = "";
+
             }
-            setText(null);
             setIcon(icon);
             setSize(icon.getIconWidth(), icon.getIconHeight());
 

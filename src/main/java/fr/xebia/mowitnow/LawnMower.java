@@ -15,17 +15,26 @@ public class LawnMower {
 
     private final Logger logger = Logger.getLogger(LawnMower.class);
     final Lawn lawn;
-    CardinalDirection direction;
     Point point;
+    CardinalDirection direction;
+    StateChangedEventHandler stateChangedEH = StateChangedEventHandler.NULL;
 
-    public LawnMower(Lawn lawn, CardinalDirection direction, Point point) {
+    public LawnMower(Lawn lawn, Point initPoint, CardinalDirection initDirection) {
         this.lawn = lawn;
-        this.direction = direction;
-        this.point = point;
+        this.point = initPoint;
+        this.direction = initDirection;
     }
 
     public LawnMower(Lawn lawn, CardinalDirection direction) {
-        this(lawn, direction, Point.ZERO);
+        this(lawn, Point.ZERO, direction);
+    }
+
+    public void setStateChangedEH(StateChangedEventHandler stateChangedEH) {
+        if (stateChangedEH == null) {
+            this.stateChangedEH = StateChangedEventHandler.NULL;
+        } else {
+            this.stateChangedEH = stateChangedEH;
+        }
     }
 
     public CardinalDirection getDirection() {
@@ -59,11 +68,20 @@ public class LawnMower {
             default:
                 throw new IllegalArgumentException("Unknown " + Command.class.getSimpleName() + " '" + cmd + "'.");
         }
+        stateChangedEH.stateChanged(point, direction);
+
     }
 
     public interface StateChangedEventHandler {
 
-        public void stateChanged(Point previousPoint, CardinalDirection previousDirection, Point currentPoint, CardinalDirection currentDirection);
+        public static final StateChangedEventHandler NULL = new StateChangedEventHandler() {
+
+            public void stateChanged(Point newPoint, CardinalDirection newDirection) {
+                //Do nothing
+            }
+        };
+
+        public void stateChanged(Point newPoint, CardinalDirection newDirection);
     }
 
     public enum Command {
