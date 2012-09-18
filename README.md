@@ -1,4 +1,5 @@
 mowitnow
 ========
 
-Projet de test
+Projet de test.
+Version stable 1.0.0
